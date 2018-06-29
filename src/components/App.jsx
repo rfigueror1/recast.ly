@@ -1,91 +1,67 @@
-var App = () => (
-  <div>
-    <nav className="navbar">
-      <div className="col-md-6 offset-md-3">
-        <Search />
-      </div>
-    </nav>
-    <div className="row">
-      <div className="col-md-7">
-        <VideoPlayer video = {window.exampleVideoData[0]}/>
-      </div>
-      <div className="col-md-5">
-        <VideoList videos = {window.exampleVideoData}/>
-      </div>
-    </div>
-  </div>
-);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      done: false,
+      data: window.exampleVideoData,
+      currentVideo: window.exampleVideoData[0]
+    };
+    
+    this.handleVideoClick = this.handleVideoClick.bind(this);
+    this.youtubeSearch =window.searchYouTube.bind(this);
+  }
+
+  
+
+  handleVideoClick(something) {
+    something = Number(something);
+    var context = this;
+    this.setState(prevState => ({
+      done: false,
+      currentVideo: context.state.data[something]
+    }));
+  }  
+
+  handleSearchClick(something) {
+    console.log(something);
+    this.youtubeSearch(something);
+  
+    // this.setState(prevState => ({
+    //   done: false
+    // //Change data here
+    // }));
+  } 
+
+  render() {
+    // this.state.done = true; need to set state to true
+    var context = this;
+    var arr = [];
+    for (var key in context.state.data){
+      arr.push(context.state.data[key]);
+    }
+    return ( 
+      <div>
+        <nav className="navbar">
+          <div className="col-md-6 offset-md-3">
+            <Search handleSearchClick={this.handleSearchClick.bind(this)}/>
+          </div>
+        </nav>
+        <div className="row">
+          <div className="col-md-7">
+            <VideoPlayer video = {this.state.currentVideo} handleVideoClick = {this.handleVideoClick.bind(this)}/>
+          </div>
+          <div className="col-md-5">
+            <VideoList videos = {this.state.data} handleVideoClick = {this.handleVideoClick.bind(this)}/>
+          </div>
+        </div>
+      </div>);
+    
+  }
+  
+
+
+}
 
 
 
-
-// class App {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <div>
-//         <nav className="navbar">
-//           <div className="col-md-6 offset-md-3">
-//             <div><h5><em>search</em> view goes here</h5></div>
-//           </div>
-//         </nav>
-//         <div className="row">
-//           <div className="col-md-7">
-//             <div><h5><em>videoPlayer</em> view goes here</h5></div>
-//           </div>
-//           <div className="col-md-5">
-//             <div><h5><em>videoList</em> view goes here</h5></div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-// }
-
-// App.prototype.render = () => {
-//   var $container = $('<div>');
-//   $container.append(${this});
-//   return $container[0];
-// };
-
-//
-//
-//
-
-// var app = new App();
-// console.log(app);
-// app.render();
-
-// In the ES6 spec, files are "modules" and do not share a top-level scope
-// `var` declarations will only exist globally where explicitly defined
-
-
- //Important stuff we need to remember
-
-//**************************** Classes ***********************************************
-//                            class Rectangle {
-//                              constructor(height, width) {
-//                                this.height = height;
-//                                this.width = width;
-//                              }
-//                            }
-
-//**************************** Arrow Functions ****************************************
-
-//console.log(materials.map(material => material.length));
-//Basic Syntax:
-
-  //                    (param1, param2, …, paramN) => { statements } 
-  //                    (param1, param2, …, paramN) => expression
-  //                     equivalent to: => { return expression; } 
-
-//**************************** Object Initializer ****************************************
-
-//                       var object1 = {a: 'foo', b: 42, c: {}};
-
-//**************************** Template Literals  ****************************************
-
-//                      `string text ${expression} string text`
